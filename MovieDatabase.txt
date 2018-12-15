@@ -1,0 +1,5 @@
+Jaws;0;10
+Rocky;0;100
+Grease;0;200
+Gladiator;0;15
+Titanic;0;50
