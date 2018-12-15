@@ -1,5 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
@@ -47,6 +47,43 @@ public class BoxOffice {
         }
 
         Objects.requireNonNull(scan).close();   // Close the scanner so we can access the Movie Database file elsewhere
+
+        updateDatabase(movies); // Update our movie database file with our movie lineup
+    }
+
+    /**
+     * Updates the database file with the current movie lineup
+     *
+     * @param movies The movie lineup that is being saved into the database
+     */
+    private static void updateDatabase(HashMap<String, Movie> movies) {
+        StringBuilder newText = new StringBuilder();
+        for (Movie movie : movies.values()) {
+            newText.append(movie.toDatabase()).append("\n");    // Add each movie to the text string
+        }
+        newText = new StringBuilder(newText.toString().trim());
+
+        try {
+            Files.delete(new File("MovieDatabase.txt").toPath());   // Delete the old database file
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Files.createFile(new File("MovieDatabase.txt").toPath());   // Create a new, blank database file
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter("MovieDatabase.txt", "UTF-8");
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Objects.requireNonNull(writer).print(newText);  // Save our movie text string to the new database file
+
+        writer.close(); // Close the writer so we can use the database file in the future
     }
 
 }
