@@ -24,6 +24,7 @@ public class BoxOffice {
     private static void runBoxOffice() {
         HashMap<String, Movie> movies = new HashMap<>();    // Store Movie objects mapped to movie name
         fillMovies(movies); // Put all movies from the database into Movie objects
+        printAll(movies);   // Print each movie's sales so far (should be no sales yet)
     }
 
     /**
@@ -84,6 +85,17 @@ public class BoxOffice {
         Objects.requireNonNull(writer).print(newText);  // Save our movie text string to the new database file
 
         writer.close(); // Close the writer so we can use the database file in the future
+    }
+
+    /**
+     * Prints a readable description for each movie's ticket sales
+     *
+     * @param movies
+     */
+    private static void printAll(HashMap<String, Movie> movies) {
+        for (Movie movie : movies.values()) {
+            System.out.println(movie);  // Print each movie's ticket sales
+        }
     }
 
 }
