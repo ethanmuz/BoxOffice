@@ -27,6 +27,14 @@ public class BoxOffice {
         printAll(movies);   // Print each movie's sales so far (should be no sales yet)
         System.out.println();   // New line for easy readability
         beginSwapping(movies); // Start allowing the Box Office owner to swap which movies will be in theaters today
+        beginDay(movies);   // Day of sales begins, start allowing for ticket sales
+        updateDatabase(movies); // Update the movie database one last time before closing the day
+
+        // Provide the Box Office with the End-Of-Day report:
+        System.out.println("\nEnd of day report:");
+        printAll(movies);
+
+        System.exit(0); // Turn off the machine to save money on electricity
     }
 
     /**
@@ -140,6 +148,43 @@ public class BoxOffice {
         printAll(movies);   // Print the new lineup
         System.out.println();
         updateDatabase(movies); // Update the database with the new lineup containing our new movie
+    }
+
+    /**
+     * The day has begun, which allows for ticket sales!
+     *
+     * @param movies The movie lineup that customers will be buying tickets from
+     */
+    private static void beginDay(HashMap<String, Movie> movies) {
+        System.out.println("\nBeginning day. To end day, type \"end day\"\n");  // Instructions for Box Office Owner
+
+        Scanner scan = new Scanner(System.in);
+        String line = "";
+
+        // Provide customers with a movie lineup and how many tickets are available for each movie
+        for (Movie movie : movies.values()) {
+            System.out.println(movie.getName() + " has " + (movie.getMaxTickets() - movie.getTicketsSold()) + " tickets available");
+        }
+
+        // Instructions for the customer on how to buy tickets
+        System.out.println("\nTo purchase a ticket, please enter: \"buy;[Movie Name];[Number of tickets]\"");
+        System.out.println("For example, try \"buy;" + movies.keySet().toArray()[(int) (Math.random() * 5)] + ";4\"");
+
+        while (!line.equals("end day")) {
+            line = scan.nextLine();
+            if (line.split(";")[0].equals("buy")) {
+                movies.get(line.split(";")[1]).sellTickets(Integer.parseInt(line.split(";")[2]));   // Get the movie the customer wants, and call its sellTickets method to mark those tickets as sold
+                updateDatabase(movies); // Update the database with the tickets sold
+                System.out.println();
+
+                // Display the update movie lineup and ticket availability to customers
+                for (Movie movie : movies.values()) {
+                    System.out.println(movie.getName() + " has " + (movie.getMaxTickets() - movie.getTicketsSold()) + " tickets available");
+                }
+
+                System.out.println();
+            }
+        }
     }
 
 }
