@@ -34,7 +34,7 @@ public class Movie {
             return false;   // Sale was unsuccessful
         }
         ticketsSold += numberOfTickets;
-        System.out.println(numberOfTickets + " tickets were just sold for " + getName());
+        System.err.println(numberOfTickets + " tickets were just sold for " + getName());
         return true;    // Sale was successful
     }
 

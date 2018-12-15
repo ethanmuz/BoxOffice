@@ -31,7 +31,7 @@ public class BoxOffice {
         updateDatabase(movies); // Update the movie database one last time before closing the day
 
         // Provide the Box Office with the End-Of-Day report:
-        System.out.println("\nEnd of day report:");
+        System.err.println("\nEnd of day report:");
         printAll(movies);
 
         System.exit(0); // Turn off the machine to save money on electricity
@@ -143,7 +143,7 @@ public class BoxOffice {
         after = after.split(";")[0] + ";0;" + after.split(";")[1];  // Add that the new movie has had zero ticket sales to date
         Movie newMovie = new Movie(after);  // Create a Movie object for the new movie
         movies.put(newMovie.getName(), newMovie);   // Add the new movie to our movie lineup
-        System.out.println("**" + before + " has been swapped with " + newMovie.getName() + "**");  // Let the box office know that we swapped movies
+        System.err.println("**" + before + " has been swapped with " + newMovie.getName() + "**");  // Let the box office know that we swapped movies
         System.out.println();
         printAll(movies);   // Print the new lineup
         System.out.println();
@@ -156,7 +156,7 @@ public class BoxOffice {
      * @param movies The movie lineup that customers will be buying tickets from
      */
     private static void beginDay(HashMap<String, Movie> movies) {
-        System.out.println("\nBeginning day. To end day, type \"end day\"\n");  // Instructions for Box Office Owner
+        System.err.println("\nBeginning day. To end day, type \"end day\"\n");  // Instructions for Box Office Owner
 
         Scanner scan = new Scanner(System.in);
         String line = "";
