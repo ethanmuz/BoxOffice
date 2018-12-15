@@ -25,6 +25,8 @@ public class BoxOffice {
         HashMap<String, Movie> movies = new HashMap<>();    // Store Movie objects mapped to movie name
         fillMovies(movies); // Put all movies from the database into Movie objects
         printAll(movies);   // Print each movie's sales so far (should be no sales yet)
+        System.out.println();   // New line for easy readability
+        beginSwapping(movies); // Start allowing the Box Office owner to swap which movies will be in theaters today
     }
 
     /**
@@ -90,12 +92,54 @@ public class BoxOffice {
     /**
      * Prints a readable description for each movie's ticket sales
      *
-     * @param movies
+     * @param movies The movies that are being printed
      */
     private static void printAll(HashMap<String, Movie> movies) {
         for (Movie movie : movies.values()) {
             System.out.println(movie);  // Print each movie's ticket sales
         }
+    }
+
+    /**
+     * Method that allows the Box Office Owner to swap movies before beginning the day
+     *
+     * @param movies Current movie lineup
+     */
+    private static void beginSwapping(HashMap<String, Movie> movies) {
+        Scanner scan = new Scanner(System.in);
+        String line = "";
+
+        // Instructions
+        System.out.println("Before the day begins, you may swap any movie you like.");
+        System.out.println("To swap a movie, please enter: \"swap;[The name of the old movie];[The name of the new Movie];[Number of tickets available for the new movie]\"");
+        System.out.println("For example, try \"swap;" + movies.keySet().toArray()[(int) (Math.random() * 5)] + ";Alien;30\"");
+        System.out.println("To finish swapping and begin sales, enter \"begin day\"");
+
+        while (!line.equals("begin day")) {
+            line = scan.nextLine();
+            if (line.split(";")[0].equals("swap")) {    // If the swap command is entered
+                swapMovies(movies, line.split(";")[1], line.split(";")[2] + ";" + line.split(";")[3]);  // Swap the old movie with our new movie
+            }
+        }
+    }
+
+    /**
+     * Parse the after command to create a Movie from it, and then replace the old movie with that movie
+     *
+     * @param movies Our movie lineup that we will be swapping inside of
+     * @param before The name of the old movie (to be replaced)
+     * @param after The String for the new movie (to be parsed) that will be replacing the 'before' movie
+     */
+    private static void swapMovies(HashMap<String, Movie> movies, String before, String after) {
+        movies.remove(before);  // Remove the old movie
+        after = after.split(";")[0] + ";0;" + after.split(";")[1];  // Add that the new movie has had zero ticket sales to date
+        Movie newMovie = new Movie(after);  // Create a Movie object for the new movie
+        movies.put(newMovie.getName(), newMovie);   // Add the new movie to our movie lineup
+        System.out.println("**" + before + " has been swapped with " + newMovie.getName() + "**");  // Let the box office know that we swapped movies
+        System.out.println();
+        printAll(movies);   // Print the new lineup
+        System.out.println();
+        updateDatabase(movies); // Update the database with the new lineup containing our new movie
     }
 
 }
