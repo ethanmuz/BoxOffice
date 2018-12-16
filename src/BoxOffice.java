@@ -156,7 +156,7 @@ public class BoxOffice {
      * @param movies The movie lineup that customers will be buying tickets from
      */
     private static void beginDay(HashMap<String, Movie> movies) {
-        System.err.println("\nBeginning day. To end day, type \"end day\"\n");  // Instructions for Box Office Owner
+        System.err.println("\nBeginning day. To end day, enter \"end day\"\n");  // Instructions for Box Office Owner
 
         Scanner scan = new Scanner(System.in);
         String line = "";
